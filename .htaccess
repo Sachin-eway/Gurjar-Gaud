@@ -1,2 +1,1 @@
 RewriteCond %{REQUEST_URI} ^/\.cpanel/webhook/deploy [NC]
-RewriteRule .* - [L]
