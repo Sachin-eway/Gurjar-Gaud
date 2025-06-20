@@ -9,10 +9,10 @@ jobs:
   FTP-Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout full git history
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Important! Fixes git diff error
+          fetch-depth: 0  # important to avoid git-ftp errors
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
@@ -20,4 +20,4 @@ jobs:
           ftp-server: ${{ secrets.FTP_SERVER }}
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
-          git-ftp-args: "--insecure"
+          git-ftp-args: "--insecure --force"
