@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0  # Ensures git history is available
 
       - name: FTP Deploy
-        uses: Sachin-Eway/FTP-Deploy-Action@3.1.1
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
           ftp-server: ${{ secrets.FTP_SERVER }}
           ftp-username: ${{ secrets.FTP_USERNAME }}
