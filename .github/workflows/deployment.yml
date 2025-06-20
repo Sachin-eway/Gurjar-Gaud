@@ -17,7 +17,7 @@ jobs:
       - name: FTP Deploy
         uses: Sachin-Eway/FTP-Deploy-Action@3.1.1
         with:
-          ftp-server: 'ftp.gurjargaudindia.com'
-          ftp-username: 'ftp_git_connect@new.gurjargaudindia.com'
-          ftp-password: 'QGPHU5yZ6(yt'
+          ftp-server: ${{ secrets.FTP_SERVER }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
           git-ftp-args: "--insecure --force --verbose --remote-root /public_html/new-site"
