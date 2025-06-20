@@ -15,8 +15,8 @@ jobs:
           fetch-depth: 0  # Ensures git history is available
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          ftp-server: ftp.gurjargaudindia.com
+          ftp-username: ftpGit@new.gurjargaudindia.com
+          ftp-password: *w-chqyyH{2i
