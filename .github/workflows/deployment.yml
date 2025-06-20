@@ -17,6 +17,6 @@ jobs:
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          ftp-server: "ftp.gurjargaudindia.com"
-          ftp-username: "ftpGit@new.gurjargaudindia.com"
-          ftp-password: "*w-chqyyH{2i"
+          server: "ftp.gurjargaudindia.com"
+          username: "ftpGit@new.gurjargaudindia.com"
+          password: "*w-chqyyH{2i"
