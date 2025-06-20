@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export APP_DIR=/home/indiagurjargaud/public_html/new-site
+    - cd $APP_DIR
+    - git reset --hard HEAD
