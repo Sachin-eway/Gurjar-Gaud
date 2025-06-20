@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Ensures git history is available
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
@@ -20,4 +20,5 @@ jobs:
           ftp-server: ${{ secrets.FTP_SERVER }}
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
-          git-ftp-args: "--insecure --force --remote-root /public_html/new-site"
+          local-dir: ./             # Adjust if you have a dist/build folder
+          git-ftp-args: "--insecure --force --verbose --remote-root /public_html/new-site"
