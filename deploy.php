@@ -1,6 +1,4 @@
 <?php
-echo shell_exec("whoami");
-die;
 // Git auto-deploy script
 $webRoot = '/home/indiagurjargaud/public_html/new-site';
 $logFile = $webRoot . '/deploy.log';
