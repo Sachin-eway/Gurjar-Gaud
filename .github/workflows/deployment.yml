@@ -1,19 +1,23 @@
 name: Publish Website to CPanel
+
 on:
   push:
     branches:
       - main
 
 jobs:
-  FTP-Deploy-Action:
+  FTP-Deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
+      - name: Checkout full git history
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - name: FTP-Deploy-Action
-        uses: SamKirkland/FTP-Deploy-Action@v3.1.1
+          fetch-depth: 0  # Important! Fixes git diff error
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
           ftp-server: ${{ secrets.FTP_SERVER }}
           ftp-username: ${{ secrets.FTP_USERNAME }}
           ftp-password: ${{ secrets.FTP_PASSWORD }}
+          git-ftp-args: "--insecure"
