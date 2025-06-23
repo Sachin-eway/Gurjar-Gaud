@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\DistrictController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -81,4 +82,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('change-state-status', 'changeStateStatus')->name('change-state-status')->middleware('checkPermission:States,edit');
         Route::delete('delete-state', 'deleteState')->name('delete-state')->middleware('checkPermission:States,delete');
     });
+
+    // District Master 
+    
+    Route::controller(DistrictController::class)->group(function () {
+        Route::get('districts', 'districts')->name('districts')->middleware('checkPermission:Districts,view');
+        Route::post('add-district', 'storeDistrict')->name('add-district')->middleware('checkPermission:Districts,add');
+        Route::get('edit-district/{id}', 'editDistrict')->name('edit-district')->middleware('checkPermission:Districts,edit');
+        Route::put('update-district', 'updateDistrict')->name('update-district')->middleware('checkPermission:Districts,edit');
+        Route::post('change-district-status', 'changeDistrictStatus')->name('change-district-status')->middleware('checkPermission:Districts,edit'); // ✅ THIS ONE
+        Route::delete('delete-district', 'deleteDistrict')->name('delete-district')->middleware('checkPermission:Districts,delete');
+    });
+    
 });
