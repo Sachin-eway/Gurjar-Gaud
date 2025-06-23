@@ -1,4 +1,15 @@
 <?php
+
+echo "<pre>";
+$output = shell_exec('whoami');
+if ($output) {
+    echo "✅ shell_exec() is enabled.<br>";
+    echo "Current user: $output";
+} else {
+    echo "❌ shell_exec() is disabled or restricted.";
+}
+echo "</pre>";
+die;
 // Git auto-deploy script
 $webRoot = '/home/indiagurjargaud/public_html/new-site';
 $logFile = $webRoot . '/deploy.log';
