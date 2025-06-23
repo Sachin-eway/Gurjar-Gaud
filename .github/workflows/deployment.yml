@@ -1,22 +1,13 @@
-name: Publish Website to CPanel
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  FTP-Deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Ensures git history is available
-
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-            server: ${{ secrets.FTP_SERVER }}
-            username: ${{ secrets.FTP_USERNAME }}
-            password: ${{ secrets.FTP_PASSWORD }}
+- name: SSH Deploy & Run Composer
+  uses: appleboy/ssh-action@v1.0.3
+  with:
+    host: ${{ secrets.SSH_HOST }}
+    username: ${{ secrets.SSH_USERNAME }}
+    password: ${{ secrets.SSH_PASSWORD }}
+    port: 22
+    script: |
+      cd /home/username/public_html/new-site
+      git pull origin main
+      composer install --no-dev --optimize-autoloader
+      php artisan migrate --force
+      php artisan config:cache
