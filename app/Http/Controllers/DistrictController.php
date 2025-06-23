@@ -12,19 +12,27 @@ class DistrictController extends Controller
         if (!hasPermission('Districts', 'view')) {
             abort(403, 'Unauthorized');
         }
-
+    
         if ($request->ajax()) {
-            $data = District::with('state')->get(); // Optional relation if defined
+            $data = District::with('state')->get();
+    
+            // Add state_name field to each district
+            $data = $data->map(function ($district) {
+                $district->state_name = $district->state->name ?? '';
+                return $district;
+            });
             return response()->json([
-                'data' => $data,
+                'data' => $data->toArray(),
                 'canAdd' => hasPermission('Districts', 'add'),
                 'canEdit' => hasPermission('Districts', 'edit'),
                 'canDelete' => hasPermission('Districts', 'delete')
             ]);
+            
         }
-
-        return view('master.districts'); // Create this Blade file
+    
+        return view('master.districts');
     }
+    
 
     public function storeDistrict(Request $request)
     {
