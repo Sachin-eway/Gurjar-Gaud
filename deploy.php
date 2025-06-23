@@ -1,7 +1,11 @@
 <?php
 
 echo "<pre>";
-$output = shell_exec('whoami');
+// $output = shell_exec('whoami');
+$output = shell_exec('ls');
+// $output = shell_exec('pwd');
+// $output = shell_exec('echo Hello');
+
 if ($output) {
     echo "✅ shell_exec() is enabled.<br>";
     echo "Current user: $output";
