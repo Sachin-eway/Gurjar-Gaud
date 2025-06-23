@@ -77,13 +77,14 @@
          @endphp
 
          @if ($mastersVisible)
-             <li
-                 class="menu-item {{ Request::is([
-                     'menus',
-                     'sub-menus/*',
-                 ])
-                     ? 'active open'
-                     : '' }}">
+            <li
+                class="menu-item {{ Request::is([
+                      'menus',
+                      'sub-menus/*',
+                      'states',
+                      'districts',
+                               ]) ? 'active open' : '' }}">
+
                  <a href="javascript:void(0);" class="menu-link text-white menu-toggle">
                      <i class="menu-icon tf-icons mdi mdi-grid"></i>
                      <div data-i18n="Master">Master</div>
@@ -92,21 +93,21 @@
                      @if (hasPermission('Menus', 'view'))
                          <li class="menu-item {{ Request::is(['menus', 'sub-menus/*']) ? 'active' : '' }}">
                              <a href="{{ route('menus') }}" class="text-white menu-link">
-                                 <div data-i18n="Menu Master">Menu</div>
+                                 <div data-i18n="Menu">Menu</div>
                              </a>
                          </li>
                      @endif
                      @if (hasPermission('States', 'view'))
                           <li class="menu-item {{ Request::is('states') ? 'active' : '' }}">
                                <a href="{{ route('states') }}" class="text-white menu-link">
-                                    <div data-i18n="State Master">State</div>
+                                    <div data-i18n="State">State</div>
                              </a>
                         </li>
                       @endif
                       @if (hasPermission('Districts', 'view'))
                            <li class="menu-item {{ Request::is('districts') ? 'active' : '' }}">
                                 <a href="{{ route('districts') }}" class="text-white menu-link">
-                                      <div data-i18n="District Master">District</div>
+                                      <div data-i18n="District">District</div>
                                 </a>
                            </li>
                       @endif
