@@ -1,4 +1,4 @@
-name: SSH Deploy & Composer Install
+name: Deploy Laravel App to cPanel
 
 on:
   push:
@@ -10,19 +10,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: SSH Deploy & Run Composer
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          host: "gurjargaudindia.com"
-          username: "indiagurjargaud"
-          password: "Iks0OzcR9#mQ"
-          port: 22
-          script: |
-            cd public_html/new.gurjargaudindia.com/ftpGit
-            git pull origin main
-            composer install --no-dev --optimize-autoloader
-            php artisan migrate --force
-            php artisan config:cache
+          php-version: 8.1
+          extensions: mbstring, bcmath, curl, xml
+          tools: composer
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Run Laravel artisan commands
+        run: |
+          php artisan config:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan cache:clear
+          php artisan config:cache
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
