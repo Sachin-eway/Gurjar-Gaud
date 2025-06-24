@@ -21,7 +21,7 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
-Route::post('/webhook/check',function(){
+Route::get('/webhook/check',function(){
      $token = request();
     return $token;
 });
