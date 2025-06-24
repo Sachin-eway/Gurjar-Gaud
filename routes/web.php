@@ -21,6 +21,11 @@ Route::get('/phpinfo', function () {
     phpinfo();
 });
 
+Route::post('/webhook/check',function(){
+     $token = request();
+    return $token;
+});
+
 Route::group(['middleware' => ['web']], function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('/', 'login')->name('login');
