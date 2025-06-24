@@ -1,4 +1,4 @@
-name: Publish Website to CPanel
+name: Auto Deploy to Server via SSH
 
 on:
   push:
@@ -6,17 +6,21 @@ on:
       - main
 
 jobs:
-  FTP-Deploy:
+  deploy:
+    name: Deploy to Production Server
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Ensures git history is available
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    steps:
+      - name: Connect via SSH and Deploy
+        uses: appleboy/ssh-action@v1.0.3
         with:
-            server: ${{ secrets.FTP_SERVER }}
-            username: ${{ secrets.FTP_USERNAME }}
-            password: ${{ secrets.FTP_PASSWORD }}
+          host: "gurjargaudindia.com"
+          username: "indiagurjargaud"
+          password: "Iks0OzcR9#mQ"
+          port: 22
+          script: |
+            echo "✅ SSH connection successful!"
+            whoami
+            hostname
+            pwd
+            ls -la
