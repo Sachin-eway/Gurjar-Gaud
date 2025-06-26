@@ -3,7 +3,7 @@
  <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme dark-menu">
      <div class="app-brand demo">
          <a href="{{ route('dashboard') }}" class="app-brand-link">
-             <span class="app-brand-logo demo">
+             <!-- <span class="app-brand-logo demo">
                  <span style="color: #fff">
                      <svg width="268" height="150" viewBox="0 0 38 20" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
@@ -39,8 +39,8 @@
                          </defs>
                      </svg>
                  </span>
-             </span>
-             <span class="app-brand-text text-white demo menu-text fw-bold ms-2">DSA</span>
+             </span> -->
+             <span class="app-brand-text text-white demo menu-text fw-bold ms-2">GujarGaud</span>
          </a>
 
          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -83,6 +83,7 @@
                       'sub-menus/*',
                       'states',
                       'districts',
+                      'city',
                                ]) ? 'active open' : '' }}">
 
                  <a href="javascript:void(0);" class="menu-link text-white menu-toggle">
@@ -111,6 +112,14 @@
                                 </a>
                            </li>
                       @endif
+                      @if (hasPermission('City', 'view'))
+                            <li class="menu-item {{ Request::is('city') ? 'active' : '' }}">
+                                 <a href="{{ route('city') }}" class="text-white menu-link">
+                                       <div data-i18n="City">City</div>
+                                 </a>
+                            </li>
+                     @endif
+
 
                  </ul>
              </li> 

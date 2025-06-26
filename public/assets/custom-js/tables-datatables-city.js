@@ -4,13 +4,14 @@ let cityCanvasEl, cityFv, deleteCityId;
 
 $(document).ready(function () {
   const formAddNewCity = document.getElementById("cityForm");
+  const formEditCity = document.getElementById("cityEditForm");
 
-  // Show Add City Modal
+  // Open Add Modal
   setTimeout(() => {
     const newRecord = document.querySelector(".create-new"),
       canvasEl = document.querySelector("#add-new-record");
 
-    if (newRecord && canvasEl) {
+    if (newRecord) {
       newRecord.addEventListener("click", function () {
         cityCanvasEl = new bootstrap.Offcanvas(canvasEl);
         $(".form-control").removeClass("is-invalid");
@@ -24,25 +25,13 @@ $(document).ready(function () {
     }
   }, 200);
 
-  // Form Validation
+  // FormValidation Init for Add
   if (formAddNewCity) {
     cityFv = FormValidation.formValidation(formAddNewCity, {
       fields: {
-        city: {
-          validators: {
-            notEmpty: { message: "Please enter city name" },
-          },
-        },
-        state_id: {
-          validators: {
-            notEmpty: { message: "Please select a state" },
-          },
-        },
-        district_id: {
-          validators: {
-            notEmpty: { message: "Please select a district" },
-          },
-        },
+        city: { validators: { notEmpty: { message: "Please enter city name" } } },
+        state_id: { validators: { notEmpty: { message: "Please select a state" } } },
+        district_id: { validators: { notEmpty: { message: "Please select a district" } } },
       },
       plugins: {
         trigger: new FormValidation.plugins.Trigger(),
@@ -55,13 +44,11 @@ $(document).ready(function () {
       },
     }).on("core.form.valid", function () {
       $.post(formAddNewCity.action, $(formAddNewCity).serialize(), function () {
-        const canvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById("add-new-record"));
-        if (canvasInstance) canvasInstance.hide();
-
-        $(".datatables-basic").DataTable().ajax.reload(null, false);
+        $(".offcanvas").offcanvas("hide");
+        $(".datatables-basic").DataTable().ajax.reload();
         toastr.success("City added successfully");
       }).fail(function (xhr) {
-        toastr.error(xhr.responseJSON?.message || "Server error");
+        toastr.error(xhr.responseJSON?.message || "Add failed");
       });
     });
   }
@@ -97,10 +84,14 @@ $(document).ready(function () {
           searchable: false,
           render: function (data, type, row) {
             const editBtn = row.canEdit
-              ? `<a href="javascript:;" class="btn btn-sm btn-text-secondary rounded-pill btn-icon edit-record" data-id="${row.id}"><i class="mdi mdi-pencil-outline"></i></a>`
+              ? `<a href="javascript:;" class="btn btn-sm btn-text-secondary rounded-pill btn-icon edit-record" 
+                  data-id="${row.id}" data-name="${row.city}" data-state="${row.state_id}" data-district="${row.district_id}">
+                  <i class="mdi mdi-pencil-outline"></i></a>`
               : "";
             const deleteBtn = row.canDelete
-              ? `<a href="javascript:;" class="btn btn-sm btn-icon text-danger delete-record" data-id="${row.id}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="mdi mdi-delete"></i></a>`
+              ? `<a href="javascript:;" class="btn btn-sm btn-icon text-danger delete-record" data-id="${row.id}" 
+                  data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                  <i class="mdi mdi-delete"></i></a>`
               : "";
             return editBtn || deleteBtn ? editBtn + deleteBtn : "Permission Denied";
           },
@@ -142,28 +133,47 @@ $(document).ready(function () {
     $("div.head-label").html('<h5 class="card-title mb-0">Cities</h5>');
   }
 
-  // Edit Modal
+  // Edit button click
   $(document).on("click", ".edit-record", function () {
     const id = $(this).data("id");
-    $.get(`/edit-city/${id}`, function (data) {
-      $("#edit_city").val(data.city);
-      $("#edit_state_id").val(data.state_id);
-      $("#edit_district_id").val(data.district_id);
-      $("#edit_country_id").val(data.country_id);
-      $("#edit_id").val(data.id);
+    const city = $(this).data("name");
+    const stateId = $(this).data("state");
+    const districtId = $(this).data("district");
 
-      const cityEditOffcanvas = new bootstrap.Offcanvas("#cityEdit");
-      cityEditOffcanvas.show();
+    $("#edit_id").val(id);
+    $("#edit_city").val(city);
+    $("#edit_state_id").val(stateId);
+    $("#edit_district_id").val(districtId);
+
+    const editCanvas = new bootstrap.Offcanvas(document.getElementById("cityEdit"));
+    editCanvas.show();
+  });
+
+  // Edit Submit
+  $("#cityEditForm").on("submit", function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: this.action,
+      method: "POST",
+      data: $(this).serialize(),
+      success: function () {
+        $(".offcanvas").offcanvas("hide");
+        $(".datatables-basic").DataTable().ajax.reload();
+        toastr.success("City updated successfully");
+      },
+      error: function (xhr) {
+        toastr.error("Update failed: " + xhr.responseJSON?.message || "Server error");
+      },
     });
   });
 
-  // Delete button handler
+  // Delete Button Click
   $(document).on("click", ".delete-record", function () {
     deleteCityId = $(this).data("id");
     $("#confirmDeleteModal").modal("show");
   });
 
-  // Confirm delete
+  // Confirm Delete
   $("#confirmDeleteBtn").on("click", function () {
     if (!deleteCityId) {
       toastr.error("No city selected.");

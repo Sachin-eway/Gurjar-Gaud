@@ -13,10 +13,9 @@ class State extends Model
     protected $primaryKey = 'state_id';
     public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-        'country_id',
-    ];
+    protected $fillable = ['name'];
+
+
 
     public function districts()
     {

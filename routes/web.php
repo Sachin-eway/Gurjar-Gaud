@@ -6,6 +6,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\CityController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -80,18 +81,34 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('edit-state/{id}', 'editState')->name('edit-state')->middleware('checkPermission:States,edit');
         Route::put('update-state', 'updateState')->name('update-state')->middleware('checkPermission:States,edit');
         Route::post('change-state-status', 'changeStateStatus')->name('change-state-status')->middleware('checkPermission:States,edit');
-        Route::delete('delete-state', 'deleteState')->name('delete-state')->middleware('checkPermission:States,delete');
+        Route::delete('states', 'deleteState')->name('states')->middleware('checkPermission:States,delete');
     });
 
     // District Master 
-    
+
     Route::controller(DistrictController::class)->group(function () {
         Route::get('districts', 'districts')->name('districts')->middleware('checkPermission:Districts,view');
         Route::post('add-district', 'storeDistrict')->name('add-district')->middleware('checkPermission:Districts,add');
+        Route::post('change-district-status', 'changeDistrictStatus')->name('change-district-status')->middleware('checkPermission:Districts,edit');
         Route::get('edit-district/{id}', 'editDistrict')->name('edit-district')->middleware('checkPermission:Districts,edit');
         Route::put('update-district', 'updateDistrict')->name('update-district')->middleware('checkPermission:Districts,edit');
-        Route::post('change-district-status', 'changeDistrictStatus')->name('change-district-status')->middleware('checkPermission:Districts,edit'); // ✅ THIS ONE
-        Route::delete('delete-district', 'deleteDistrict')->name('delete-district')->middleware('checkPermission:Districts,delete');
+        Route::delete('districts', 'deleteDistrict')->name('districts')->middleware('checkPermission:Districts,delete');
+
     });
+    
+
+    // City Master
+
+    Route::controller(CityController::class)->group(function () {
+        Route::get('city', 'city')->name('city')->middleware('checkPermission:City,view');
+        Route::get('cities', 'cities')->name('cities')->middleware('checkPermission:City,view');
+        Route::post('add-city', 'store')->name('add-city')->middleware('checkPermission:City,add');
+        Route::get('edit-city/{id}', 'edit')->name('edit-city')->middleware('checkPermission:City,edit');
+        Route::put('update-city', 'update')->name('update-city')->middleware('checkPermission:City,edit');
+        Route::post('change-city-status', 'changeStatus')->name('change-city-status')->middleware('checkPermission:City,status');
+        Route::delete('city', 'delete')->name('city')->middleware('checkPermission:City,delete');
+    });
+    
+    
     
 });

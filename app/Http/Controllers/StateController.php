@@ -31,26 +31,27 @@ class StateController extends Controller
     public function storeState(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:states,name',
-            'country_id' => 'required|numeric'
+            'name' => 'required|string|max:255',
         ]);
-
+    
         $state = State::create([
-            'country_id' => $request->country_id,
             'name' => $request->name,
         ]);
-
+    
         return response()->json([
             'data' => $state,
             'status' => 'success',
             'message' => 'State created successfully',
         ]);
     }
+    
 
     public function editState($id)
     {
         $data = State::where('state_id', $id)->firstOrFail();
         return response()->json(['data' => $data]);
+
+        
     }
 
     public function updateState(Request $request)
@@ -58,13 +59,12 @@ class StateController extends Controller
         $request->validate([
             'state_id' => 'required|exists:states,state_id',
             'name' => 'required|string|unique:states,name,' . $request->state_id . ',state_id',
-            'country_id' => 'required|numeric'
         ]);
+        
 
         $state = State::where('state_id', $request->state_id)->firstOrFail();
         $state->update([
             'name' => $request->name,
-            'country_id' => $request->country_id
         ]);
 
         return response()->json([
