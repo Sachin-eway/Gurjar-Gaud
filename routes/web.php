@@ -18,6 +18,15 @@ Route::get('/clear', function () {
     return redirect()->back();
  });
 
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
+Route::get('/webhook/check',function(){
+     $token = request();
+    return $token;
+});
+
 Route::group(['middleware' => ['web']], function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('/', 'login')->name('login');
