@@ -6,11 +6,13 @@
 
     <!-- Left Section -->
     <div class="d-none d-lg-flex col-lg-7 col-xl-7 align-items-center bg-white justify-content-center p-5">
-      <img
-        src="{{ asset('assets/img/gujargaud-login') }}"
-        class="img-fluid"
-        alt="GujarGaud Illustration"
-      />
+     <img
+        src="{{ asset('assets/img/gujargaud-logo.jpg') }}"
+        class="img-fluid w-75"  {{-- Adjust width with w-25, w-50, w-75, w-100 --}}
+         alt="GujarGaud Illustration"
+     />
+
+       <!-- <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" /> -->
     </div>
     <!-- /Left Section -->
 

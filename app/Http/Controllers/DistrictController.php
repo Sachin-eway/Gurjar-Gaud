@@ -78,7 +78,6 @@ class DistrictController extends Controller
     { 
         $district = District::where('distt_id', $request->id)->firstOrFail();
         $district->delete();
-    
         return response()->json([
             'data' => $district,
             'status' => 'success',
@@ -87,11 +86,8 @@ class DistrictController extends Controller
     }
 
     
-    
-
-    // Optional: Remove this method if you're not using status at all
     public function changeDistrictStatus(Request $request)
     {
-        abort(404); // Or just delete this function if unused
+        abort(404); 
     }
 }

@@ -145,6 +145,29 @@
                 </a>
             </li>
         @endif
+        
+     <!-- CensusForm List  -->
+    
+     @if (hasPermission('Census Forms', 'view'))
+       <li class="menu-item {{ Request::is('census-forms') ? 'active' : '' }}">
+           <a href="{{ route('census-forms') }}" class="menu-link text-white">
+              <i class="menu-icon tf-icons mdi mdi-format-list-bulleted"></i>
+                  <div data-i18n="Census List">Census List</div>
+           </a>
+       </li>
+      @endif
+
+        <!-- CensusMember Form List -->
+
+        @if (hasPermission('Census Members', 'view'))
+          <li class="menu-item {{ Request::is('census-members') ? 'active' : '' }}">
+                 <a href="{{ route('census-members') }}" class="menu-link text-white">
+                     <i class="menu-icon tf-icons mdi mdi-account-group"></i>
+                     <div data-i18n="Census Members">Census Members</div>
+                 </a>
+            </li>
+        @endif
+
 
      </ul>
 

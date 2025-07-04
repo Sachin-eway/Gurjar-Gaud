@@ -6,6 +6,8 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\CensusFormController;
+use App\Http\Controllers\CensusMemberController;
 use App\Http\Controllers\CityController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/clear', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
-    //Artisan::call('migrate');
+  
  
     return redirect()->back();
  });
@@ -21,6 +23,14 @@ Route::get('/clear', function () {
 Route::get('/phpinfo', function () {
     phpinfo();
 });
+
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate');
+
+    return redirect()->back();
+});
+
 
 Route::get('/webhook/check',function(){
      $token = request();
@@ -117,7 +127,25 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('change-city-status', 'changeStatus')->name('change-city-status')->middleware('checkPermission:City,status');
         Route::delete('city', 'delete')->name('city')->middleware('checkPermission:City,delete');
     });
+
+   // CensusForm Routes
+      Route::controller(CensusFormController::class)->group(function () {
+              Route::get('census-forms', 'censusForms')->name('census-forms')->middleware('checkPermission:Census Forms,view');
+              Route::post('add-census-form', 'storeForm')->name('add-census-form')->middleware('checkPermission:Census Forms,add');
+              Route::get('edit-census-form/{id}', 'editForm')->name('edit-census-form')->middleware('checkPermission:Census Forms,edit');
+              Route::post('update-census-form', 'updateForm')->name('update-census-form')->middleware('checkPermission:Census Forms,edit');
+              Route::post('delete-census-form', 'deleteForm')->name('delete-census-form')->middleware('checkPermission:Census Forms,delete');
+       });
+   // CensusMember Form Routs
+       Route::controller(CensusMemberController::class)->group(function () {
+        Route::get('census-members', 'index')->name('census-members')->middleware('checkPermission:Census Members,view');
+        Route::post('add-census-member', 'store')->name('add-census-member')->middleware('checkPermission:Census Members,add');
+        Route::get('edit-census-member/{id}', 'edit')->name('edit-census-member')->middleware('checkPermission:Census Members,edit');
+        Route::post('update-census-member', 'update')->name('update-census-member')->middleware('checkPermission:Census Members,edit');
+        Route::post('delete-census-member', 'destroy')->name('delete-census-member')->middleware('checkPermission:Census Members,delete');
+    });
     
+
     
     
 });
